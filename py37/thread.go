@@ -1,6 +1,6 @@
 package py37
 
-// #cgo pkg-config: python3
+// #cgo pkg-config: python37
 // #include "Python.h"
 import "C"
 

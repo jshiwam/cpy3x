@@ -1,14 +1,14 @@
 package pycore
 
-// #cgo pkg-config: python3
+// #cgo pkg-config: python35
 // #include "Python.h"
 import "C"
 
 type PyObject C.PyObject
 
 var (
-	Py_False = C.Py_False
-	Py_True  = C.Py_True
+	Py_False = (*PyObject)(C.Py_False)
+	Py_True  = (*PyObject)(C.Py_True)
 )
 
 func PyBool_FromLong(v int) *PyObject {
