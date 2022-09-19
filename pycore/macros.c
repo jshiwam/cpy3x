@@ -23,8 +23,14 @@ int _go_PyBool_Check(PyObject *o){
     return PyBool_Check(o);
 }
 
-// PyByteArray_Check : 
+// PyByteArray_Check : https://docs.python.org/3/c-api/bytearray.html#c.PyByteArray_Check
 // Not a part of Stable ABI but present in versions 3.5-3.10
 int _go_PyByteArray_Check(PyObject *o){
     return PyByteArray_Check(o);
+}
+
+// PyByteArray_CheckExact : https://docs.python.org/3/c-api/bytearray.html#c.PyByteArray_CheckExact
+// Not a part of Stable ABI but present in versions 3.5-3.10
+int _go_PyByteArray_CheckExact(PyObject *o){
+    return PyByteArray_CheckExact(o);
 }

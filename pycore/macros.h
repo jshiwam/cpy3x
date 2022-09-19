@@ -11,5 +11,6 @@ int _go_PyType_Check(PyObject *o);
 
 int _go_PyBool_Check(PyObject *o);
 int _go_PyByteArray_Check(PyObject *o);
+int _go_PyByteArray_CheckExact(PyObject *o);
 
 #endif
