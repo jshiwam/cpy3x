@@ -7,28 +7,24 @@ import "C"
 import "unsafe"
 
 // Part Of Stable ABI
-// PyObject : https://docs.python.org/3/c-api/stable.html#stable-application-binary-interface
-type PyObject C.PyObject
-
-// Part Of Stable ABI
 // PyBool_Type : https://docs.python.org/3/c-api/stable.html
-var Bool = togo((*C.PyObject)(unsafe.Pointer(&C.PyBool_Type)))
+var Bool = Togo((*C.PyObject)(unsafe.Pointer(&C.PyBool_Type)))
 
 // Not part of Stable ABI, but available across versions 3.5-3.10
 // Py_False : https://docs.python.org/3.5/c-api/bool.html?highlight=pybool_type#c.Py_False
 var (
-	Py_False = togo(C.Py_False)
-	Py_True  = togo(C.Py_True)
+	Py_False = Togo(C.Py_False)
+	Py_True  = Togo(C.Py_True)
 )
 
 // Part of Stable ABI
 // PyBool_FromLong : https://docs.python.org/3.5/c-api/bool.html?highlight=pybool_type#c.PyBool_FromLong
 func PyBool_FromLong(v int) *PyObject {
-	return togo(C.PyBool_FromLong(C.long(v)))
+	return Togo(C.PyBool_FromLong(C.long(v)))
 }
 
 // Not part of Stable ABI, but available across versions 3.5-3.10
 // PyBool_Check : https://docs.python.org/3.10/c-api/bool.html?highlight=pybool_type#c.PyBool_Check
 func PyBool_Check(o *PyObject) bool {
-	return C._go_PyBool_Check(toc(o)) == 1
+	return C._go_PyBool_Check(Toc(o)) == 1
 }

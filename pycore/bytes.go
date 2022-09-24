@@ -10,5 +10,5 @@ func PyBytes_FromString(str string) *PyObject {
 	cstring := C.CString(str)
 	defer C.free(unsafe.Pointer(cstring))
 
-	return togo(C.PyBytes_FromString(cstring))
+	return Togo(C.PyBytes_FromString(cstring))
 }
