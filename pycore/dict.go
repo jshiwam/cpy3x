@@ -2,7 +2,7 @@ package pycore
 
 /*
 #include "Python.h"
-#include "macros.h"
+#include "macro.h"
 */
 import "C"
 import (
@@ -129,7 +129,7 @@ func PyDict_Next(p *PyObject, ppos *int, pkey, pvalue **PyObject) bool {
 	return res
 }
 
-//PyDict_ClearFreeList : https://docs.python.org/3/c-api/dict.html#c.PyDict_ClearFreeList
-func PyDict_ClearFreeList() int {
-	return int(C.PyDict_ClearFreeList())
-}
+// //PyDict_ClearFreeList : https://docs.python.org/3/c-api/dict.html#c.PyDict_ClearFreeList
+// func PyDict_ClearFreeList() int {
+// 	return int(C.PyDict_ClearFreeList())
+// }

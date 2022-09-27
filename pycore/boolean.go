@@ -2,7 +2,7 @@ package pycore
 
 // #cgo pkg-config: python3
 // #include "Python.h"
-// #include "macros.h"
+// #include "macro.h"
 import "C"
 import "unsafe"
 

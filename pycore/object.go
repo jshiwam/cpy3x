@@ -1,12 +1,19 @@
 package pycore
 
-import "unsafe"
+//go:generate go run script/variadic.go
 
 /*
 #include "Python.h"
-#include "macros.h"
+#include "macro.h"
+#include "variadic.h"
 */
 import "C"
+import (
+	"unsafe"
+)
+
+//MaxVariadicLength is the maximum number of arguments that can be passed to a variadic C function due to a cgo limitation
+var MaxVariadicLength = 20
 
 // Constants used for comparison in PyObject_RichCompareBool
 var (
@@ -160,7 +167,7 @@ func (pyObject *PyObject) IsInstance(cls *PyObject) int {
 
 //Part of Stable ABI
 //PyCallable_Check : https://docs.python.org/3/c-api/call.html#c.PyCallable_Check
-func (pyObject *PyObject) PyCallable_Check() bool {
+func PyCallable_Check(pyObject *PyObject) bool {
 	return C.PyCallable_Check(Toc(pyObject)) == 1
 }
 
@@ -178,14 +185,45 @@ func (pyObject *PyObject) CallObject(args *PyObject) *PyObject {
 
 //Part of Stable ABI
 //CallFunctionObjArgs : https://docs.python.org/3/c-api/call.html#c.PyObject_CallFunctionObjArgs
-// TODO Add variadic function generating script and implement this API
+func (pyObject *PyObject) CallFunctionObjArgs(args ...*PyObject) *PyObject {
+	if len(args) > MaxVariadicLength {
+		panic("CallFunctionObjArgs: too many arguments")
+	}
+	if len(args) == 0 {
+		return Togo(C._go_PyObject_CallFunctionObjArgs(Toc(pyObject), 0, (**C.PyObject)(nil)))
+	}
+	cargs := make([]*C.PyObject, len(args), len(args))
+	for i, arg := range args {
+		cargs[i] = Toc(arg)
+	}
+	return Togo(C._go_PyObject_CallFunctionObjArgs(Toc(pyObject), C.int(len(args)), (**C.PyObject)(unsafe.Pointer(&cargs[0]))))
+}
 
 //Part of Stable ABI
 //CallMethodObjArgs : https://docs.python.org/3/c-api/call.html#c.PyObject_CallMethodObjArgs
-// TODO Add variadic function generating script and implement this API
+func (pyObject *PyObject) CallMethodObjArgs(name *PyObject, args ...*PyObject) *PyObject {
+
+	if len(args) > MaxVariadicLength {
+		panic("CallMethodObjArgs: too many arguments ")
+	}
+
+	if len(args) == 0 {
+		return Togo(C._go_PyObject_CallMethodObjArgs(Toc(pyObject), Toc(name), 0, (**C.PyObject)(nil)))
+	}
+	cargs := make([]*C.PyObject, len(args), len(args))
+	for i, arg := range args {
+		cargs[i] = Toc(arg)
+	}
+	return Togo(C._go_PyObject_CallMethodObjArgs(Toc(pyObject), Toc(name), C.int(len(args)), (**C.PyObject)(unsafe.Pointer(&cargs[0]))))
+}
 
 //CallMethodArgs : same as CallMethodObjArgs but with name as go string
-// TODO depends on CallMethodObjArgs
+func (pyObject *PyObject) CallMethodArgs(name string, args ...*PyObject) *PyObject {
+	nameObj := PyUnicode_FromString(name)
+	defer nameObj.DecRef()
+
+	return pyObject.CallMethodObjArgs(nameObj, args...)
+}
 
 //Part of Stable ABI
 //Hash : https://docs.python.org/3/c-api/object.html#c.PyObject_Hash

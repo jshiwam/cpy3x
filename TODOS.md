@@ -1,0 +1,1 @@
+# Check this [PR](https://bugs.python.org/issue40428) from @vstinner while implementing the API for version 3.10

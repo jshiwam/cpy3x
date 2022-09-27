@@ -2,7 +2,7 @@ package pycore
 
 /*
 #include "Python.h"
-#include "macros.h"
+#include "macro.h"
 */
 import "C"
 import (
