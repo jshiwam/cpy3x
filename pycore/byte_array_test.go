@@ -9,7 +9,7 @@ func TestPyByteArrayCheck(t *testing.T) {
 	s1 := "hWlloEorld"
 
 	bytes := PyByteArray_FromStringAndSize(s1)
-	defer DecRef(bytes)
+	defer bytes.DecRef()
 
 	assert.True(t, PyByteArray_Check(bytes))
 	assert.True(t, PyByteArray_CheckExact(bytes))
@@ -23,7 +23,7 @@ func TestPyByteArrayAsString(t *testing.T) {
 	s2 := "hWlloEorld"
 
 	bytes := PyByteArray_FromStringAndSize(s2)
-	defer DecRef(bytes)
+	defer bytes.DecRef()
 
 	assert.Equal(t, PyByteArray_AsString(bytes), s2)
 	Py_Finalize()
@@ -36,7 +36,7 @@ func TestPyByteArrayResize(t *testing.T) {
 	newSize := 4
 	bytes := PyByteArray_FromStringAndSize(s3)
 
-	defer DecRef(bytes)
+	defer bytes.DecRef()
 
 	assert.Equal(t, PyByteArray_Size(bytes), len(s3))
 	// Resize to smaller size
@@ -60,13 +60,13 @@ func TestPyByteArrayConcat(t *testing.T) {
 	s5 := "hWlloEorld"
 
 	a := PyByteArray_FromStringAndSize(s4)
-	defer DecRef(a)
+	defer a.DecRef()
 
 	b := PyByteArray_FromStringAndSize(s5)
-	defer DecRef(b)
+	defer b.DecRef()
 
 	ab := PyByteArray_Concat(a, b)
-	defer DecRef(ab)
+	defer ab.DecRef()
 
 	result := PyByteArray_AsString(ab)
 
@@ -80,12 +80,12 @@ func TestPyByteArrayFromObject(t *testing.T) {
 	s6 := "WoRldoLLeH"
 
 	bytes := PyBytes_FromString(s6)
-	defer DecRef(bytes)
+	defer bytes.DecRef()
 
 	assert.NotNil(t, bytes)
 
 	bytearr := PyByteArray_FromObject(bytes)
-	defer DecRef(bytearr)
+	defer bytearr.DecRef()
 
 	assert.NotNil(t, bytearr)
 
