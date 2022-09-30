@@ -11,15 +11,16 @@ type PyThreadState C.PyThreadState
 //PyGILState is an opaque “handle” to the thread state when PyGILState_Ensure() was called, and must be passed to PyGILState_Release() to ensure Python is left in the same state
 type PyGILState C.PyGILState_STATE
 
+// Change : Removed 3.8 Onwards
 //PyEval_InitThreads : https://docs.python.org/3/c-api/init.html#c.PyEval_InitThreads
-func PyEval_InitThreads() {
-	C.PyEval_InitThreads()
-}
-
+// func PyEval_InitThreads() {
+// 	C.PyEval_InitThreads()
+// }
+// Change : Removed 3.8 Onwards
 //PyEval_ThreadsInitialized : https://docs.python.org/3/c-api/init.html#c.PyEval_ThreadsInitialized
-func PyEval_ThreadsInitialized() bool {
-	return C.PyEval_ThreadsInitialized() != 0
-}
+// func PyEval_ThreadsInitialized() bool {
+// 	return C.PyEval_ThreadsInitialized() != 0
+// }
 
 //PyEval_SaveThread : https://docs.python.org/3/c-api/init.html#c.PyEval_SaveThread
 func PyEval_SaveThread() *PyThreadState {
@@ -41,10 +42,11 @@ func PyThreadState_Swap(tstate *PyThreadState) *PyThreadState {
 	return (*PyThreadState)(C.PyThreadState_Swap((*C.PyThreadState)(tstate)))
 }
 
+// Change : Removed 3.8 Onwards
 //PyEval_ReInitThreads : https://docs.python.org/3/c-api/init.html#c.PyEval_ReInitThreads
-func PyEval_ReInitThreads() {
-	C.PyEval_ReInitThreads()
-}
+// func PyEval_ReInitThreads() {
+// 	C.PyEval_ReInitThreads()
+// }
 
 //PyGILState_Ensure : https://docs.python.org/3/c-api/init.html#c.PyGILState_Ensure
 func PyGILState_Ensure() PyGILState {

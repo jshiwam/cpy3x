@@ -155,9 +155,10 @@ func Py_GetPath() (string, error) {
 //Py_SetPath : https://docs.python.org/3/c-api/init.html#c.Py_SetPath
 func Py_SetPath(path string) error {
 	cpath := C.CString(path)
+	size := C.size_t(len(path))
 	defer C.free(unsafe.Pointer(cpath))
 
-	newPath := C.Py_DecodeLocale(cpath, nil)
+	newPath := C.Py_DecodeLocale(cpath, &size)
 	if newPath == nil {
 		return fmt.Errorf("fail to call Py_DecodeLocale on '%s'", path)
 	}

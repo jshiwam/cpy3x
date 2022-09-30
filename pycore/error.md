@@ -298,3 +298,29 @@ runtime.goexit()
 
 ===========
 The above error is resolved by not using PySet_Path in TestPath. We are just checking for Py_GetPath there.
+
+What is the Reason ?
+
+================
+<!-- Why does nil gets appended to everything that we set in 3.5  -->
+ RUN   TestPath
+    lifecycle_test.go:92: default Path /home/ella/.pyenv/versions/3.5.9/lib/python35.zip:/home/ella/.pyenv/versions/3.5.9/lib/python3.5:/home/ella/.pyenv/versions/3.5.9/lib/python3.5/plat-linux:/home/ella/.pyenv/versions/3.5.9/lib/python3.5/lib-dynload
+    lifecycle_test.go:101: /home/ella/.pyenv/versions/3.5.9/lib/python35.zip:/home/ella/.pyenv/versions/3.5.9/lib/python3.5:/home/ella/.pyenv/versions/3.5.9/lib/python3.5/plat-linux:/home/ella/.pyenv/versions/3.5.9/lib/python3.5/lib-dynload <nil>
+    lifecycle_test.go:101:  <nil>
+    lifecycle_test.go:101: /home/ella/.pyenv/shims/python3 <nil>
+    lifecycle_test.go:101: /home/ella/.pyenv/versions/3.5.9 <nil>
+    lifecycle_test.go:101: /home/ella/.pyenv/versions/3.5.9 <nil>
+    lifecycle_test.go:101: ������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������򢥳Q <nil>
+--- PASS: TestPath (0.00s)
+=== RUN   TestVersion
+--- PASS: TestVersion (0.00s)
+=== RUN   TestPlatform
+--- PASS: TestPlatform (0.00s)
+=== RUN   TestCopyright
+--- PASS: TestCopyright (0.00s)
+=== RUN   TestCompiler
+--- PASS: TestCompiler (0.00s)
+=== RUN   TestBuildInfo
+--- PASS: TestBuildInfo (0.00s)
+=== RUN   TestSetArgv
+Fatal Python error: Py_Initialize: can't initialize sys

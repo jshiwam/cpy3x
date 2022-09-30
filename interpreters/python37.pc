@@ -8,6 +8,6 @@ Name: Python
 Description: Python library
 Requires: 
 Version: 3.7
-Libs.private: -lcrypt -ldl -lpthread -lutil -lrt
-Libs: -L${libdir} -lpython3.7m -lutil -lm -ldl
+Libs.private: -ldl -lm -lcrpyt
+Libs: -L${libdir} -lpython3.7m -lm -ldl -lcrpyt
 Cflags: -I${includedir}/python3.7m

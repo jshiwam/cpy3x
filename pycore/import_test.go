@@ -244,6 +244,7 @@ func TestGetModuleDict(t *testing.T) {
 
 func TestGetImporter(t *testing.T) {
 	Py_Initialize()
+	defer Py_Finalize()
 
 	paths := PySys_GetObject("path")
 	path := PyList_GetItem(paths, 0)
@@ -260,5 +261,4 @@ func TestGetImporter(t *testing.T) {
 	if dthread == nil {
 		PyErr_Clear()
 	}
-	Py_Finalize()
 }
