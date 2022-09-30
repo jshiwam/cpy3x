@@ -212,4 +212,89 @@ test.py:4: RuntimeError: test warning
 PASS
 ok      github.com/jshiwam/cpy3x/pycore 0.666s
 
-MS
+MRS-Fail
+MS-run
+MR-run
+SR-run
+
+=======================
+The above warning was silenced using PyErr_Clear()
+
+================================================================
+
+After adding lifecycle.go
+
+Probably because of Calling functions such as GetProgramName before PyInititalize()
+
+Ref:
+
+Note The following functions should not be called before Py_Initialize(): Py_EncodeLocale(), Py_GetPath(), Py_GetPrefix(), Py_GetExecPrefix(), Py_GetProgramFullPath(), Py_GetPythonHome(), Py_GetProgramName() and PyEval_InitThreads().
+
+Error 1
+
+
+--- PASS: TestInitialization (0.13s)
+=== RUN   TestInitializationEx
+--- PASS: TestInitializationEx (0.07s)
+=== RUN   TestProgramName
+    lifecycle_test.go:35: 
+                Error Trace:    /home/ella/dev/scribble/cpy3x/pycore/lifecycle_test.go:35
+                Error:          Expected nil, but got: &errors.errorString{s:"fail to call Py_EncodeLocale"}
+                Test:           TestProgramName
+--- FAIL: TestProgramName (0.00s)
+=== RUN   TestPrefix
+--- PASS: TestPrefix (0.00s)
+
+Error 2 :
+
+--- PASS: TestInitialization (0.05s)
+=== RUN   TestInitializationEx
+--- PASS: TestInitializationEx (0.05s)
+=== RUN   TestProgramName
+--- PASS: TestProgramName (0.00s)
+=== RUN   TestPrefix
+--- PASS: TestPrefix (0.00s)
+=== RUN   TestExecPrefix
+--- PASS: TestExecPrefix (0.00s)
+=== RUN   TestProgramFullPath
+--- PASS: TestProgramFullPath (0.00s)
+=== RUN   TestPath
+--- PASS: TestPath (0.00s)
+=== RUN   TestVersion
+--- PASS: TestVersion (0.00s)
+=== RUN   TestPlatform
+--- PASS: TestPlatform (0.00s)
+=== RUN   TestCopyright
+--- PASS: TestCopyright (0.00s)
+=== RUN   TestCompiler
+--- PASS: TestCompiler (0.00s)
+=== RUN   TestBuildInfo
+--- PASS: TestBuildInfo (0.00s)
+=== RUN   TestPythonHome
+--- PASS: TestPythonHome (0.00s)
+=== RUN   TestSetArgv
+Fatal Python error: Py_Initialize: can't initialize sys
+
+Current thread 0x00007f3a73232740 (most recent call first):
+SIGABRT: abort
+PC=0x7f3a732cba7c m=0 sigcode=18446744073709551610
+signal arrived during cgo execution
+
+goroutine 62 [syscall]:
+runtime.cgocall(0x5da280, 0xc0000406f8)
+        /usr/local/go/src/runtime/cgocall.go:157 +0x5c fp=0xc0000406d0 sp=0xc000040698 pc=0x423fbc
+github.com/jshiwam/cpy3x/pycore._Cfunc_Py_Initialize()
+        _cgo_gotypes.go:4985 +0x45 fp=0xc0000406f8 sp=0xc0000406d0 pc=0x5c7305
+github.com/jshiwam/cpy3x/pycore.Py_Initialize(...)
+        /home/ella/dev/scribble/cpy3x/pycore/lifecycle.go:22
+github.com/jshiwam/cpy3x/pycore.TestSetArgv(0xc00016dd40?)
+        /home/ella/dev/scribble/cpy3x/pycore/lifecycle_test.go:119 +0x25 fp=0xc000040770 sp=0xc0000406f8 pc=0x5b8ae5
+testing.tRunner(0xc0001731e0, 0x7d7598)
+        /usr/local/go/src/testing/testing.go:1439 +0x102 fp=0xc0000407c0 sp=0xc000040770 pc=0x4eb942
+testing.(*T).Run.func1()
+        /usr/local/go/src/testing/testing.go:1486 +0x2a fp=0xc0000407e0 sp=0xc0000407c0 pc=0x4ec7ea
+runtime.goexit()
+
+
+===========
+The above error is resolved by not using PySet_Path in TestPath. We are just checking for Py_GetPath there.
