@@ -26,9 +26,10 @@ func TestInitialization(t *testing.T) {
 
 // }
 
+// sometimes lead to crash in python3.5 version. Seems to be a bug specific to version.
 func TestProgramName(t *testing.T) {
-	// set := Py_SetStandardStreamEncoding("utf-8", "surrogateescape")
-	// assert.Zero(t, set)
+	set := Py_SetStandardStreamEncoding("utf-8", "surrogateescape")
+	assert.Zero(t, set)
 	Py_Initialize()
 	// Should call Py_GetProgramName after Py_Initialize
 	defaultName, err := Py_GetProgramName()
@@ -67,13 +68,7 @@ func TestProgramFullPath(t *testing.T) {
 }
 
 func TestPythonHome(t *testing.T) {
-	defer Py_Finalize()
-	defer t.Log(Py_GetProgramName())
-	defer t.Log(Py_GetPrefix())
-	defer t.Log(Py_GetExecPrefix())
-	defer t.Log(Py_GetProgramFullPath())
-	defer t.Log(Py_GetPythonHome())
-	defer t.Log(Py_GetPath())
+
 	name := "høme"
 	defaultHome, err := Py_GetPythonHome()
 	defer Py_SetPythonHome(defaultHome)
@@ -86,21 +81,28 @@ func TestPythonHome(t *testing.T) {
 }
 
 // Commenting this out doesnot crash the next Py_Initialize for some reason.
-// func TestPath(t *testing.T) {
-// 	// defer Py_Finalize()
-// 	// Should call Py_GetPath after Py_Initialize
+func TestPath(t *testing.T) {
+	// Should call Py_GetPath after Py_Initialize
 
-// 	defaultPath, err := Py_GetPath()
-// 	t.Log(defaultPath, len(defaultPath))
-// 	// defer Py_SetPath(defaultPath)
+	defer Py_Finalize()
+	defer t.Log(Py_GetProgramName())
+	defer t.Log(Py_GetPrefix())
+	defer t.Log(Py_GetExecPrefix())
+	defer t.Log(Py_GetProgramFullPath())
+	defer t.Log(Py_GetPythonHome())
+	defer t.Log(Py_GetPath())
 
-// 	assert.Nil(t, err)
-// 	name := "path"
-// 	Py_SetPath(name)
-// 	newName, err := Py_GetPath()
-// 	assert.Nil(t, err)
-// 	assert.Equal(t, name, newName)
-// }
+	defaultPath, err := Py_GetPath()
+	t.Log(defaultPath, len(defaultPath))
+	defer Py_SetPath(defaultPath)
+
+	assert.Nil(t, err)
+	name := "path"
+	Py_SetPath(name)
+	newName, err := Py_GetPath()
+	assert.Nil(t, err)
+	assert.Equal(t, name, newName)
+}
 
 func TestVersion(t *testing.T) {
 	version := Py_GetVersion()
@@ -128,13 +130,6 @@ func TestBuildInfo(t *testing.T) {
 }
 
 func TestSetArgv(t *testing.T) {
-	// This fails sometimes for version 3.5 throwing an error, which says
-	// ```Fatal Python error: Py_Initialize: can't initialize sys```
-	// The following link has more info on this. Seems to be a bug in python version 3.5
-	// Download the fixed patch and test this code.
-	// https://stackoverflow.com/questions/23702936/embedded-python-py-initialize-cant-initialize-sys-standard-streams
-	// https://bugs.python.org/issue17797
-
 	Py_Initialize()
 	PySys_SetArgv([]string{"test.py"})
 	argv := PySys_GetObject("argv")
