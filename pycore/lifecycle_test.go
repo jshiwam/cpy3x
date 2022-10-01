@@ -26,7 +26,6 @@ func TestInitialization(t *testing.T) {
 
 // }
 
-// sometimes lead to crash in python3.5 version. Seems to be a bug specific to version.
 func TestProgramName(t *testing.T) {
 	set := Py_SetStandardStreamEncoding("utf-8", "surrogateescape")
 	assert.Zero(t, set)
@@ -80,17 +79,11 @@ func TestPythonHome(t *testing.T) {
 	assert.Equal(t, name, newName)
 }
 
-// Commenting this out doesnot crash the next Py_Initialize for some reason.
+// sometimes lead to crash in python3.5 version. Seems to be a bug specific to version..
 func TestPath(t *testing.T) {
 	// Should call Py_GetPath after Py_Initialize
 
 	defer Py_Finalize()
-	defer t.Log(Py_GetProgramName())
-	defer t.Log(Py_GetPrefix())
-	defer t.Log(Py_GetExecPrefix())
-	defer t.Log(Py_GetProgramFullPath())
-	defer t.Log(Py_GetPythonHome())
-	defer t.Log(Py_GetPath())
 
 	defaultPath, err := Py_GetPath()
 	t.Log(defaultPath, len(defaultPath))
