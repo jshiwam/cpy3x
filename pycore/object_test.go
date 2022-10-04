@@ -245,6 +245,7 @@ func TestObjectItem(t *testing.T) {
 	assert.Zero(t, err)
 }
 
+// Change:
 // This test needs to go into specific version. Because the list attribs differ accordign to list size.
 // func TestDir(t *testing.T) {
 // 	Py_Initialize()

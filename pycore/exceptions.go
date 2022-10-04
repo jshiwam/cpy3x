@@ -41,7 +41,7 @@ var (
 	PyExc_KeyboardInterrupt      = Togo(C.PyExc_KeyboardInterrupt)
 	PyExc_LookupError            = Togo(C.PyExc_LookupError)
 	PyExc_MemoryError            = Togo(C.PyExc_MemoryError)
-	// New in 3.6
+	// Change: New in 3.6
 	// PyExc_ModuleNotFoundError    = Togo(C.PyExc_ModuleNotFoundError)
 	PyExc_NameError             = Togo(C.PyExc_NameError)
 	PyExc_NotADirectoryError    = Togo(C.PyExc_NotADirectoryError)

@@ -15,7 +15,7 @@ func TestInitialization(t *testing.T) {
 
 }
 
-// Not available in 3.5
+// Change: Not available in 3.5
 // func TestInitializationEx(t *testing.T) {
 
 // 	Py_Initialize()
