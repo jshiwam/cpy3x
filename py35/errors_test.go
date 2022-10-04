@@ -1,17 +1,23 @@
+package py35
 
-// Change: TypeError in 3.6 and 3.7
-// func TestErrorInterrupt(t *testing.T) {
-// 	Py_Initialize()
+import (
+	"github.com/jshiwam/cpy3x/pycore"
+	"github.com/stretchr/testify/assert"
+	"testing"
+)
 
-// 	PyErr_SetInterrupt()
+func TestErrorInterrupt(t *testing.T) {
+	pycore.Py_Initialize()
 
-// 	assert.Equal(t, -1, PyErr_CheckSignals())
+	pycore.PyErr_SetInterrupt()
 
-// 	exc := PyErr_Occurred()
+	assert.Equal(t, -1, pycore.PyErr_CheckSignals())
 
-// 	assert.True(t, PyErr_GivenExceptionMatches(exc, PyExc_KeyboardInterrupt))
+	exc := pycore.PyErr_Occurred()
 
-// 	assert.NotNil(t, PyErr_Occurred())
-// 	PyErr_Clear()
-// 	assert.Nil(t, PyErr_Occurred())
-// }
+	assert.True(t, pycore.PyErr_GivenExceptionMatches(exc, pycore.PyExc_KeyboardInterrupt))
+
+	assert.NotNil(t, pycore.PyErr_Occurred())
+	pycore.PyErr_Clear()
+	assert.Nil(t, pycore.PyErr_Occurred())
+}
