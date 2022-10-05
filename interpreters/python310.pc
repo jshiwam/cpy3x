@@ -1,7 +1,7 @@
 # See: man pkg-config
-prefix=/home/ella/.pyenv/versions/3.10.7
+prefix=~/.pyenv/versions/3.10.7
 exec_prefix=${prefix}
-libdir=/home/ella/.pyenv/versions/3.10.7/lib
+libdir=~/.pyenv/versions/3.10.7/lib
 includedir=${prefix}/include
 
 Name: Python
